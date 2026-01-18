@@ -175,6 +175,9 @@ void Game::CreateDeviceDependentResources()
 void Game::CreateWindowSizeDependentResources()
 {
     // TODO: Initialize windows-size dependent objects here.
+
+
+
 }
 
 void Game::OnDeviceLost()
