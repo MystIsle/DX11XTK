@@ -88,10 +88,9 @@ void Game::Render()
 	m_spriteBatch->Draw(m_texture.Get(),
 	                    m_screenPos,
 	                    nullptr,
-	                    Colors::White,
+	                    Colors::Green,
 	                    0.f,
-	                    m_origin,
-	                    cosf(time) + 2.f
+	                    m_origin
 	);
 
 	m_spriteBatch->End();
