@@ -9,7 +9,7 @@
 extern void ExitGame() noexcept;
 
 using namespace DirectX;
-using namespace DirectX::DX11;
+using namespace DirectX::SimpleMath;
 
 using Microsoft::WRL::ComPtr;
 
