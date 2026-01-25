@@ -6,7 +6,6 @@
 
 #include "DeviceResources.h"
 #include "StepTimer.h"
-#include "directxtk/SimpleMath.h"
 #include <memory>
 
 namespace DirectX

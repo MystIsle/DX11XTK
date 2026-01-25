@@ -5,7 +5,6 @@
 #include "pch.h"
 #include "Game.h"
 #include "directxtk/WICTextureLoader.h"
-#include "directxtk/SpriteBatch.h"
 
 extern void ExitGame() noexcept;
 
