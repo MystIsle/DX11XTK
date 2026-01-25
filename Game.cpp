@@ -81,14 +81,15 @@ void Game::Render()
 	auto context = m_deviceResources->GetD3DDeviceContext();
 
 
-	//배치 기능으로 드로우콜 한번에 스프라이트 뿌리기...!
+	float time = static_cast<float>(m_timer.GetTotalSeconds());
+	
 	m_spriteBatch->Begin();
 
 	m_spriteBatch->Draw(m_texture.Get(),
 	                    m_screenPos,
 	                    nullptr,
 	                    Colors::White,
-	                    0.f,
+	                    cosf(time),
 	                    m_origin
 	);
 
