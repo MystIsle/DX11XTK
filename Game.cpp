@@ -80,18 +80,21 @@ void Game::Render()
 	m_deviceResources->PIXBeginEvent(L"Render");
 	auto context = m_deviceResources->GetD3DDeviceContext();
 
-	
-	//배치 기능으로 드로우콜 한번에 스프라이트 뿌리기...!
-	m_spriteBatch->Begin();
 
-	m_spriteBatch->Draw(m_texture.Get(), m_screenPos, nullptr,
-		Colors::White, 0.f, m_origin);
+	//배치 기능으로 드로우콜 한번에 스프라이트 뿌리기...!
+	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states->NonPremultiplied());
+
+	m_spriteBatch->Draw(m_texture.Get(),
+	                    m_screenPos,
+	                    nullptr,
+	                    Colors::White,
+	                    0.f,
+	                    m_origin
+	);
 
 	m_spriteBatch->End();
-	
-	
-	
-	
+
+
 	context;
 	m_deviceResources->PIXEndEvent();
 
@@ -181,27 +184,29 @@ void Game::CreateDeviceDependentResources()
 {
 	auto device = m_deviceResources->GetD3DDevice();
 	auto context = m_deviceResources->GetD3DDeviceContext();
-	
+
 	m_spriteBatch = std::make_unique<SpriteBatch>(context);
 
 	ComPtr<ID3D11Resource> resource;
 	DX::ThrowIfFailed(CreateWICTextureFromFile(
-		device, 
-		L"Resources/cat.png", 
-		resource.GetAddressOf(),
-		m_texture.ReleaseAndGetAddressOf())
-		);
-	
+			device,
+			L"Resources/cat.png",
+			resource.GetAddressOf(),
+			m_texture.ReleaseAndGetAddressOf())
+	);
+
 	//캐스팅 하는 부분은 굳이 넣은 이유는 : 캐스팅 사용 예시 보여주려고 하는 의도?
 	ComPtr<ID3D11Texture2D> cat;
 	DX::ThrowIfFailed(resource.As(&cat));
-	
+
 	CD3D11_TEXTURE2D_DESC catDesc;
 	cat->GetDesc(&catDesc);
-	
+
 	//이미지 중점
 	m_origin.x = static_cast<float>(catDesc.Width) / 2;
 	m_origin.y = static_cast<float>(catDesc.Height) / 2;
+
+	m_states = std::make_unique<CommonStates>(device);
 }
 
 // Allocate all memory resources that change on a window SizeChanged event.
@@ -209,7 +214,7 @@ void Game::CreateWindowSizeDependentResources()
 {
 	// 윈도우 Draw 영역 사이즈?
 	auto size = m_deviceResources->GetOutputSize();
-	
+
 	m_screenPos.x = static_cast<float>(size.right) / 2.f;
 	m_screenPos.y = static_cast<float>(size.bottom) / 2.f;
 }
@@ -218,6 +223,7 @@ void Game::OnDeviceLost()
 {
 	m_texture.Reset();
 	m_spriteBatch.reset();
+	m_states.reset();
 }
 
 void Game::OnDeviceRestored()
