@@ -82,13 +82,13 @@ void Game::Render()
 
 
 	float time = static_cast<float>(m_timer.GetTotalSeconds());
-	
-	m_spriteBatch->Begin();
+
+	m_spriteBatch->Begin(SpriteSortMode_Deferred, nullptr, m_states->LinearWrap());
 
 	m_spriteBatch->Draw(m_texture.Get(),
 	                    m_screenPos,
-	                    nullptr,
-	                    Colors::Green,
+	                    &m_tileRect,
+	                    Colors::White,
 	                    0.f,
 	                    m_origin
 	);
@@ -204,8 +204,13 @@ void Game::CreateDeviceDependentResources()
 	cat->GetDesc(&catDesc);
 
 	//이미지 중점
-	m_origin.x = static_cast<float>(catDesc.Width) / 2;
-	m_origin.y = static_cast<float>(catDesc.Height) / 2;
+	m_origin.x = static_cast<float>(catDesc.Width) * 2;
+	m_origin.y = static_cast<float>(catDesc.Height) * 2;
+
+	m_tileRect.left = catDesc.Width * 2;
+	m_tileRect.right = catDesc.Width * 6;
+	m_tileRect.top = catDesc.Height * 2;
+	m_tileRect.bottom = catDesc.Height * 6;
 
 	m_states = std::make_unique<CommonStates>(device);
 }
