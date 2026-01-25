@@ -89,8 +89,9 @@ void Game::Render()
 	                    m_screenPos,
 	                    nullptr,
 	                    Colors::White,
-	                    cosf(time),
-	                    m_origin
+	                    0.f,
+	                    m_origin,
+	                    cosf(time) + 2.f
 	);
 
 	m_spriteBatch->End();
