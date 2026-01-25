@@ -84,7 +84,6 @@ namespace DX
     }
 }
 
-
 #include "directxtk/SimpleMath.h"
 #include "directxtk/SpriteBatch.h"
 #include "directxtk/CommonStates.h"
