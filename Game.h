@@ -6,9 +6,16 @@
 
 #include "DeviceResources.h"
 #include "StepTimer.h"
-
+#include "directxtk/SimpleMath.h"
 #include <memory>
 
+namespace DirectX
+{
+    inline namespace DX11
+    {
+        class SpriteBatch;
+    }
+}
 
 // A basic game implementation that creates a D3D11 device and
 // provides a game loop.
@@ -62,4 +69,9 @@ private:
 
     // Rendering loop timer.
     DX::StepTimer                           m_timer;
+    
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
+    std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
+    DirectX::SimpleMath::Vector2 m_screenPos;
+    DirectX::SimpleMath::Vector2 m_origin;
 };
