@@ -4,7 +4,7 @@
 
 #include "pch.h"
 #include "Game.h"
-#include "directxtk/WICTextureLoader.h"
+
 
 extern void ExitGame() noexcept;
 
@@ -82,7 +82,7 @@ void Game::Render()
 
 
 	//배치 기능으로 드로우콜 한번에 스프라이트 뿌리기...!
-	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states->NonPremultiplied());
+	m_spriteBatch->Begin();
 
 	m_spriteBatch->Draw(m_texture.Get(),
 	                    m_screenPos,
@@ -188,9 +188,9 @@ void Game::CreateDeviceDependentResources()
 	m_spriteBatch = std::make_unique<SpriteBatch>(context);
 
 	ComPtr<ID3D11Resource> resource;
-	DX::ThrowIfFailed(CreateWICTextureFromFile(
+	DX::ThrowIfFailed(CreateDDSTextureFromFile(
 			device,
-			L"Resources/cat.png",
+			L"Resources/cat.dds",
 			resource.GetAddressOf(),
 			m_texture.ReleaseAndGetAddressOf())
 	);

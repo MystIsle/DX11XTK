@@ -108,3 +108,5 @@ namespace DX
 #include "directxtk/SimpleMath.h"
 #include "directxtk/SpriteBatch.h"
 #include "directxtk/CommonStates.h"
+#include "directxtk/WICTextureLoader.h"
+#include "directxtk/DDSTextureLoader.h"
