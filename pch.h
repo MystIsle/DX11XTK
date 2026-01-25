@@ -82,6 +82,14 @@ namespace DX
             throw com_exception(hr);
         }
     }
+    
+    inline void LogErrorIfFailed(HRESULT hr)
+    {
+        if (FAILED(hr))
+        {
+            throw com_exception(hr);
+        }
+    }
 }
 
 #include "directxtk/SimpleMath.h"

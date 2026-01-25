@@ -83,18 +83,13 @@ void Game::Render()
 
 	float time = static_cast<float>(m_timer.GetTotalSeconds());
 
-	m_spriteBatch->Begin(SpriteSortMode_Deferred, nullptr, m_states->LinearWrap());
+	m_spriteBatch->Begin();
 
-	m_spriteBatch->Draw(m_texture.Get(),
-	                    m_screenPos,
-	                    &m_tileRect,
-	                    Colors::White,
-	                    0.f,
-	                    m_origin
-	);
+	m_spriteBatch->Draw(m_background.Get(), m_fullscreenRect);
+	
+	m_spriteBatch->Draw(m_texture.Get(), m_stretchRect, nullptr, Colors::White);
 
 	m_spriteBatch->End();
-
 
 	context;
 	m_deviceResources->PIXEndEvent();
@@ -188,6 +183,13 @@ void Game::CreateDeviceDependentResources()
 
 	m_spriteBatch = std::make_unique<SpriteBatch>(context);
 
+	DX::ThrowIfFailed(
+		CreateWICTextureFromFile(device,
+			L"Resources/sunset.jpg",
+			nullptr,
+			m_background.ReleaseAndGetAddressOf()
+		));
+	
 	ComPtr<ID3D11Resource> resource;
 	DX::ThrowIfFailed(CreateDDSTextureFromFile(
 			device,
@@ -204,8 +206,8 @@ void Game::CreateDeviceDependentResources()
 	cat->GetDesc(&catDesc);
 
 	//이미지 중점
-	m_origin.x = static_cast<float>(catDesc.Width) * 2;
-	m_origin.y = static_cast<float>(catDesc.Height) * 2;
+	m_origin.x = static_cast<float>(catDesc.Width) / 2;
+	m_origin.y = static_cast<float>(catDesc.Height) / 2;
 
 	m_tileRect.left = catDesc.Width * 2;
 	m_tileRect.right = catDesc.Width * 6;
@@ -223,6 +225,12 @@ void Game::CreateWindowSizeDependentResources()
 
 	m_screenPos.x = static_cast<float>(size.right) / 2.f;
 	m_screenPos.y = static_cast<float>(size.bottom) / 2.f;
+
+	m_stretchRect.left = size.right / 4;
+	m_stretchRect.top = size.bottom / 4;
+	m_stretchRect.right = m_stretchRect.left + size.right / 2;
+	m_stretchRect.bottom = m_stretchRect.top + size.bottom / 2;
+	m_fullscreenRect = m_deviceResources->GetOutputSize();
 }
 
 void Game::OnDeviceLost()
@@ -230,6 +238,7 @@ void Game::OnDeviceLost()
 	m_texture.Reset();
 	m_spriteBatch.reset();
 	m_states.reset();
+	m_background.Reset();
 }
 
 void Game::OnDeviceRestored()
