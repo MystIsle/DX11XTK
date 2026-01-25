@@ -83,3 +83,7 @@ namespace DX
         }
     }
 }
+
+
+#include "directxtk/SimpleMath.h"
+#include "directxtk/SpriteBatch.h"
