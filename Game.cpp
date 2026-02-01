@@ -6,6 +6,7 @@
 #include "Game.h"
 
 #include "AnimatedTexture.h"
+#include "ScrollingBackground.h"
 
 extern void ExitGame() noexcept;
 
@@ -59,8 +60,9 @@ void Game::Tick()
 void Game::Update(DX::StepTimer const& timer)
 {
 	float elapsedTime = float(timer.GetElapsedSeconds());
-	
+
 	m_ship->Update(elapsedTime);
+	m_stars->Update(elapsedTime * 500);
 }
 #pragma endregion
 
@@ -76,13 +78,17 @@ void Game::Render()
 
 	Clear();
 
-	m_deviceResources->PIXBeginEvent(L"Render");
 	auto context = m_deviceResources->GetD3DDeviceContext();
 
-	m_spriteBatch->Begin();
-	m_ship->Draw(m_spriteBatch.get(), m_shipPos);
-	m_spriteBatch->End();
-
+	m_deviceResources->PIXBeginEvent(L"Render");
+	{
+		m_spriteBatch->Begin();
+		{
+			m_stars->Draw(m_spriteBatch.get());
+			m_ship->Draw(m_spriteBatch.get(), m_shipPos);
+		}
+		m_spriteBatch->End();
+	}
 	m_deviceResources->PIXEndEvent();
 
 	// Show the new frame.
@@ -183,6 +189,16 @@ void Game::CreateDeviceDependentResources()
 
 	m_ship = std::make_unique<AnimatedTexture>();
 	m_ship->Load(m_texture.Get(), 4, 20);
+
+	DX::ThrowIfFailed(
+		CreateWICTextureFromFile(device,
+		                         L"starfield.png",
+		                         nullptr,
+		                         m_backgroundTex.ReleaseAndGetAddressOf())
+	);
+
+	m_stars = std::make_unique<ScrollingBackground>();
+	m_stars->Load(m_backgroundTex.Get());
 }
 
 // Allocate all memory resources that change on a window SizeChanged event.
@@ -191,6 +207,8 @@ void Game::CreateWindowSizeDependentResources()
 	auto size = m_deviceResources->GetOutputSize();
 	m_shipPos.x = static_cast<float>(size.right / 2);
 	m_shipPos.y = static_cast<float>((size.bottom / 2) + (size.bottom / 4));
+
+	m_stars->SetWindow(size.right, size.bottom);
 }
 
 void Game::OnDeviceLost()
@@ -198,6 +216,9 @@ void Game::OnDeviceLost()
 	m_ship.reset();
 	m_spriteBatch.reset();
 	m_texture.Reset();
+
+	m_stars.reset();
+	m_backgroundTex.Reset();
 }
 
 void Game::OnDeviceRestored()
