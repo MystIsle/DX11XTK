@@ -1,6 +1,28 @@
-# DX11XTK
+# DX11XTK - Sprites and Textures
 
-DirectX 11과 DirectX Tool Kit을 활용한 Windows 그래픽 애플리케이션 프로젝트입니다.
+DirectX 11과 DirectX Tool Kit을 활용한 스프라이트 및 텍스처 렌더링 예제입니다.
+
+## 브랜치 정보
+
+**현재 브랜치**: `feature/Sprites-and-textures`
+
+이 브랜치에서는 SpriteBatch를 사용한 2D 스프라이트 렌더링과 텍스처 로딩을 구현합니다.
+
+## 구현 기능
+
+- **SpriteBatch**: 2D 스프라이트 일괄 렌더링
+- **텍스처 로딩**: DDS, WIC(PNG, JPG) 포맷 지원
+- **배경 이미지**: WICTextureLoader로 JPG 배경 로딩
+- **스프라이트 이미지**: DDSTextureLoader로 DDS 텍스처 로딩
+
+## 리소스 파일
+
+| 파일 | 설명 |
+|------|------|
+| `Resources/cat.dds` | 고양이 스프라이트 (DDS 포맷) |
+| `Resources/cat.png` | 고양이 원본 이미지 |
+| `Resources/sunset.jpg` | 배경 이미지 |
+| `Resources/texconv.exe` | DirectXTex 텍스처 변환 도구 |
 
 ## 요구 사항
 
@@ -15,30 +37,18 @@ DirectX 11과 DirectX Tool Kit을 활용한 Windows 그래픽 애플리케이션
 2. 구성 선택: `Debug|x64` 또는 `Release|x64`
 3. 빌드 실행 (Ctrl+Shift+B)
 
-vcpkg 의존성은 빌드 시 자동으로 설치됩니다.
-
-## 프로젝트 구조
-
-| 파일 | 설명 |
-|------|------|
-| `Main.cpp` | 애플리케이션 진입점, 윈도우 생성 및 메시지 루프 |
-| `Game.cpp/h` | 게임 루프, Update/Render 로직 |
-| `DeviceResources.cpp/h` | D3D11 디바이스, 스왑체인, 렌더 타겟 관리 |
-| `StepTimer.h` | 프레임 타이밍 유틸리티 |
-| `pch.h` | 미리 컴파일된 헤더 (DirectXTK 포함) |
-
 ## 사용 라이브러리
 
 - **DirectX 11** - 3D 그래픽 API
 - **DirectXMath** - SIMD 수학 라이브러리
-- **DirectX Tool Kit** - 스프라이트, 모델, 이펙트, 입력 처리 등
-- **DirectXTex** - 텍스처 처리 라이브러리
+- **DirectX Tool Kit** - SpriteBatch, 텍스처 로더 등
+- **DirectXTex** - 텍스처 처리 및 변환
 
 ## 참고 자료
 
-- [DirectX Tool Kit Wiki](https://github.com/microsoft/DirectXTK/wiki)
-- [DirectXTex Wiki](https://github.com/microsoft/DirectXTex/wiki)
-- [DirectX 11 Programming Guide](https://docs.microsoft.com/en-us/windows/win32/direct3d11/atoc-dx-graphics-direct3d-11)
+- [DirectXTK Wiki - SpriteBatch](https://github.com/microsoft/DirectXTK/wiki/SpriteBatch)
+- [DirectXTK Wiki - DDSTextureLoader](https://github.com/microsoft/DirectXTK/wiki/DDSTextureLoader)
+- [DirectXTK Wiki - WICTextureLoader](https://github.com/microsoft/DirectXTK/wiki/WICTextureLoader)
 
 ## 라이선스
 
