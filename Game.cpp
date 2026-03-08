@@ -82,7 +82,11 @@ void Game::Render()
 
     m_spriteBatch->Begin();
     
-    std::wstring output = std::wstring(L"Hello") + std::wstring(L" World");
+    
+    const char* ascii = "Hello World";
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+    std::wstring output = converter.from_bytes(ascii);
+    
     Vector2 origin = m_font->MeasureString(output.c_str()) / 2.f;
     m_font->DrawString(m_spriteBatch.get(), output.c_str(), m_fontPos, Colors::White, 0.f, origin);
     m_spriteBatch->End();

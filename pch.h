@@ -11,6 +11,8 @@
 #endif
 #include <sdkddkver.h>
 #include <string>
+#include <codecvt>
+#include <locale>
 
 // Use the C++ standard templated min/max
 #define NOMINMAX
