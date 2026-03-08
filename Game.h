@@ -48,7 +48,6 @@ public:
     void GetDefaultSize( int& width, int& height ) const noexcept;
 
 private:
-
     void Update(DX::StepTimer const& timer);
     void Render();
 
@@ -62,4 +61,6 @@ private:
 
     // Rendering loop timer.
     DX::StepTimer                           m_timer;
+    
+    std::unique_ptr<DirectX::SpriteFont> m_font;
 };
