@@ -10,6 +10,7 @@
 #define _WIN32_WINNT 0x0603
 #endif
 #include <sdkddkver.h>
+#include <string>
 
 // Use the C++ standard templated min/max
 #define NOMINMAX
