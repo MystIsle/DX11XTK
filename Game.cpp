@@ -8,8 +8,10 @@
 extern void ExitGame() noexcept;
 
 using namespace DirectX;
+using namespace DirectX::SimpleMath;
 
 using Microsoft::WRL::ComPtr;
+
 
 Game::Game() noexcept(false)
 {
@@ -78,8 +80,11 @@ void Game::Render()
     m_deviceResources->PIXBeginEvent(L"Render");
     auto context = m_deviceResources->GetD3DDeviceContext();
 
-    // TODO: Add your rendering code here.
-    context;
+    m_spriteBatch->Begin();
+    const wchar_t* output = L"Hello World";
+    Vector2 origin = m_font->MeasureString(output) / 2.f;
+    m_font->DrawString(m_spriteBatch.get(), output, m_fontPos, Colors::White, 0.f, origin);
+    m_spriteBatch->End();
 
     m_deviceResources->PIXEndEvent();
 
@@ -171,17 +176,22 @@ void Game::CreateDeviceDependentResources()
 
     m_font = std::make_unique<SpriteFont>(device, L"myfile.spritefont");
     
+    auto context = m_deviceResources->GetD3DDeviceContext();
+    m_spriteBatch = std::make_unique<SpriteBatch>(context);
 }
 
 // Allocate all memory resources that change on a window SizeChanged event.
 void Game::CreateWindowSizeDependentResources()
 {
-    // TODO: Initialize windows-size dependent objects here.
+    auto size = m_deviceResources->GetOutputSize();
+    m_fontPos.x = static_cast<float>(size.right) / 2.f;
+    m_fontPos.y = static_cast<float>(size.bottom) / 2.f;
 }
 
 void Game::OnDeviceLost()
 {
     m_font.reset();
+    m_spriteBatch.reset();
 }
 
 void Game::OnDeviceRestored()
